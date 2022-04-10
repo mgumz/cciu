@@ -12,17 +12,18 @@ container image names.
 
 ### Flags
 
-    -exclude-beta-tags  - exclude 'beta' tags (and 'alpha', 'rc')
-    -h                  - show help
-    -json               - print JSON
-    -json-pretty        - print JSON, prettyfied
-    -limit-per-registry - n concurrent fetch operations per registry
-    -show-old           - show older tags
-    -simple-markers     - use simple ascii markers
-    -stats              - show stats
-    -strict-labels      - strict label matching
-    -timeout            - time out fetch operation after <dur>
-    -version            - show version
+    -exclude-beta-tags        - exclude 'beta' tags (and 'alpha', 'rc')
+    -h                        - show help
+    -json                     - print JSON
+    -json-pretty              - print JSON, prettyfied
+    -limit-per-registry       - n concurrent fetch operations per registry
+    -show-old                 - show older tags
+    -simple-markers           - use simple ascii markers
+    -stats                    - show stats
+    -strict-labels            - strict label matching
+    -timeout                  - time out fetch operation after <dur>
+    -keep=["major"|"minor"]   - keep major/minor version
+    -version                  - show version
 
 ## Snippets
 
@@ -40,6 +41,11 @@ If no update is available, the output would look like this:
 
     $> cciu alpine:3.13.5
     =       alpine:3.13.5
+
+To only check for updates of patch version keeping the minor version:
+
+    $> cciu -keep=minor alpine:3.11.4
+    ▲       alpine:3.11.13
 
 In addition, the output could be JSON to process it somewhere else:
 
