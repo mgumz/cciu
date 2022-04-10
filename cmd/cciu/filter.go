@@ -1,12 +1,17 @@
 package main
 
 import (
-	"cciu/internal/tag"
 	"fmt"
-	"os"
-	"strings"
 
 	"github.com/Masterminds/semver/v3"
+
+	"cciu/internal/tag"
+)
+
+const (
+	keepIgnoreLevel = iota
+	keepMajorLevel
+	keepMinorLevel
 )
 
 type fList []tag.FilterFunc
@@ -36,21 +41,13 @@ func (list fList) filterStrictLabels(label string, doFilter bool) fList {
 	return append(list, f)
 }
 
-func (list fList) filterVersionLevel(base *semver.Version, level string) fList {
-	var c *semver.Constraints
-
-	switch strings.ToLower(level) {
-	case "":
-		return list
-	case "major":
-		c, _ = semver.NewConstraint(fmt.Sprintf("~%d", base.Major()))
-	case "minor":
-		c, _ = semver.NewConstraint(fmt.Sprintf("~%d.%d", base.Major(), base.Minor()))
-	default:
-		fmt.Fprintf(os.Stderr, "Ignoring unknown version Level: %s\n", level)
-		return list
+func (list fList) filterKeepLevel(base *semver.Version, keepLevel int) fList {
+	if keepLevel == keepMajorLevel {
+		c, _ := semver.NewConstraint(fmt.Sprintf("~%d", base.Major()))
+		return append(list, tag.ConstraintFilter(c))
+	} else if keepLevel == keepMinorLevel {
+		c, _ := semver.NewConstraint(fmt.Sprintf("~%d.%d", base.Major(), base.Minor()))
+		return append(list, tag.ConstraintFilter(c))
 	}
-	f := tag.ConstraintFilter(c)
-
-	return append(list, f)
+	return list
 }

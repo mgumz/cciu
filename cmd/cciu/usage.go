@@ -15,3 +15,9 @@ Flags:`)
 
 	flag.PrintDefaults()
 }
+
+func printUnsupportedMinMajorLevel(level string) int {
+
+	fmt.Fprintf(os.Stderr, "Ignoring unknown version Level: %s\n", level)
+	return 13
+}
