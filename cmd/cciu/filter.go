@@ -2,6 +2,9 @@ package main
 
 import (
 	"cciu/internal/tag"
+	"fmt"
+	"os"
+	"strings"
 
 	"github.com/Masterminds/semver/v3"
 )
@@ -30,5 +33,24 @@ func (list fList) filterStrictLabels(label string, doFilter bool) fList {
 	f := func(v *semver.Version) bool {
 		return v.Prerelease() == label
 	}
+	return append(list, f)
+}
+
+func (list fList) filterVersionLevel(base *semver.Version, level string) fList {
+	var c *semver.Constraints
+
+	switch strings.ToLower(level) {
+	case "":
+		return list
+	case "major":
+		c, _ = semver.NewConstraint(fmt.Sprintf("~%d", base.Major()))
+	case "minor":
+		c, _ = semver.NewConstraint(fmt.Sprintf("~%d.%d", base.Major(), base.Minor()))
+	default:
+		fmt.Fprintf(os.Stderr, "Ignoring unknown version Level: %s\n", level)
+		return list
+	}
+	f := tag.ConstraintFilter(c)
+
 	return append(list, f)
 }

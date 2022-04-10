@@ -25,8 +25,9 @@ type cciuRepoTags struct {
 
 type cciuOpts struct {
 	Filter struct {
-		IgnoreBeta   bool
-		StrictLabels bool
+		IgnoreBeta       bool
+		StrictLabels     bool
+		KeepVersionLevel string
 	}
 
 	Fetcher registry.Fetcher
@@ -40,6 +41,7 @@ func main() {
 
 	flag.BoolVar(&opts.Filter.IgnoreBeta, "exclude-beta-tags", false, "exclude 'beta' tags")
 	flag.BoolVar(&opts.Filter.StrictLabels, "strict-labels", false, "strict label matching")
+	flag.StringVar(&opts.Filter.KeepVersionLevel, "keep", "", "keep [major|minor] version")
 
 	doPrintJSON := flag.Bool("json", false, "use json output format")
 	doPrettyPrintJSON := flag.Bool("json-pretty", false, "indent json output")
@@ -176,6 +178,7 @@ func compareAndPrint(spec *imagespec.Spec, rtags map[string]*cciuRepoTags, opts 
 	fl = fl.filterHugeVersionGaps(v)
 	fl = fl.filterBetaVersions(opts.Filter.IgnoreBeta)
 	fl = fl.filterStrictLabels(spec.Label, opts.Filter.StrictLabels)
+	fl = fl.filterVersionLevel(v, opts.Filter.KeepVersionLevel)
 
 	tags := tag.NewFromStrings(rt.Tags, tag.ApplyFilterList(fl))
 	tags.Sort()
