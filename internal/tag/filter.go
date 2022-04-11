@@ -28,7 +28,7 @@ func HugeVersionHeuristicFilter(a *semver.Version, n int) FilterFunc {
 	return filter
 }
 
-// ConstaintFilter generates a tag.FilterFunc based on a semver.Constraint.
+// ConstraintFilter generates a tag.FilterFunc based on a semver.Constraint.
 // The Check() method already has the same interface as required for FilterFunc,
 // hence, just return the function.
 func ConstraintFilter(c *semver.Constraints) FilterFunc {
