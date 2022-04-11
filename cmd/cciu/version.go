@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 var (
-	versionString = "0.6.0-dev-build"
+	versionString = "0.8.0-dev-build"
 	gitHash       = ""
 	buildDate     = ""
 )
