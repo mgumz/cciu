@@ -50,9 +50,10 @@ deps-vendor:
 	go mod vendor
 deps-cleanup:
 	go mod tidy
+deps-ls:
+	go list -m -mod=readonly -f '{{if not .Indirect}}{{.}}{{end}}' all
 deps-ls-updates:
-	go list -m -mod=readonly -u github.com/containers/image/v5 github.com/Masterminds/semver/v3
-
+	go list -m -mod=readonly -f '{{if not .Indirect}}{{.}}{{end}}' -u all
 
 report: report-cyclo report-lint report-staticcheck report-mispell report-ineffassign report-vet
 report-cyclo:
