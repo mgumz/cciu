@@ -1,7 +1,7 @@
 VERSION=0.8.0
 BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 GIT_HASH=$(shell git rev-parse HEAD)
-TARGETS=linux.amd64 linux.arm64 linux.mips64 windows.amd64.exe darwin.amd64
+TARGETS=linux.amd64 linux.arm64 linux.mips64 windows.amd64.exe darwin.amd64 darwin.arm64
 CONTAINER_IMAGE=quay.io/mgumz/cciu:$(VERSION)
 
 LDFLAGS=-ldflags "-X main.versionString=$(VERSION) -X main.buildDate=$(BUILD_DATE) -X main.gitHash=$(GIT_HASH)"
