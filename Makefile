@@ -4,7 +4,7 @@ GIT_HASH=$(shell git rev-parse HEAD)
 TARGETS=linux.amd64 linux.arm64 linux.mips64 windows.amd64.exe darwin.amd64 darwin.arm64
 CONTAINER_IMAGE=quay.io/mgumz/cciu:$(VERSION)
 
-LDFLAGS=-ldflags "-X main.versionString=$(VERSION) -X main.buildDate=$(BUILD_DATE) -X main.gitHash=$(GIT_HASH)"
+LDFLAGS=$(EXTRA_LDFLAGS) -X main.versionString=$(VERSION) -X main.buildDate=$(BUILD_DATE) -X main.gitHash=$(GIT_HASH)
 BINARIES=$(foreach r,$(TARGETS),bin/cciu-$(VERSION).$(r))
 RELEASES=$(subst windows.amd64.tar.gz,windows.amd64.zip,$(foreach r,$(subst .exe,,$(TARGETS)),releases/cciu-$(VERSION).$(r).tar.gz))
 
@@ -24,13 +24,14 @@ clean:
 	rm -f $(BINARIES) $(RELEASES)
 
 cciu: bin/cciu
+cciu-small:
+	make EXTRA_LDFLAGS="-s -w" bin/cciu
 bin/cciu:
-	go build $(LDFLAGS) -o $@ ./cmd/cciu
-
+	go build -ldflags "$(LDFLAGS)" -o $@ ./cmd/cciu
 
 bin/cciu-$(VERSION).%:
 	env GOARCH=$(subst .,,$(suffix $(subst .exe,,$@))) GOOS=$(subst .,,$(suffix $(basename $(subst .exe,,$@)))) CGO_ENABLED=0 \
-	go build $(LDFLAGS) -o $@ ./cmd/cciu
+	go build -ldflags "$(LDFLAGS)" -o $@ ./cmd/cciu
 
 releases/cciu-$(VERSION).%.zip: bin/cciu-$(VERSION).%.exe
 	mkdir -p releases
