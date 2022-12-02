@@ -19,6 +19,8 @@ toc:
 binaries: $(BINARIES)
 releases: $(RELEASES)
 	make $(RELEASES)
+list-releases:
+	@echo $(RELEASES)|tr ' ' '\n'
 
 clean:
 	rm -f $(BINARIES) $(RELEASES)
