@@ -1,4 +1,4 @@
-module cciu
+module github.com/mgumz/cciu
 
 go 1.19
 

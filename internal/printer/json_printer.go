@@ -1,12 +1,13 @@
 package printer
 
 import (
-	"cciu/internal/stats"
 	"encoding/json"
 	"io"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+
+	"github.com/mgumz/cciu/internal/stats"
 )
 
 // JSONPrinter collects the requested images, the fetched tags and creates

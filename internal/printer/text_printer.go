@@ -1,12 +1,13 @@
 package printer
 
 import (
-	"cciu/internal/stats"
 	"fmt"
 	"io"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+
+	"github.com/mgumz/cciu/internal/stats"
 )
 
 const (
