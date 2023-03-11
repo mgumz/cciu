@@ -19,6 +19,7 @@ container image names.
     -limit-per-registry       - n concurrent fetch operations per registry
     -show-old                 - show older tags
     -simple-markers           - use simple ascii markers
+    -skip-non-semver          - skip non-semver tags
     -stats                    - show stats
     -strict-labels            - strict label matching
     -timeout                  - time out fetch operation after <dur>

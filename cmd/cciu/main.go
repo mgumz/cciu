@@ -27,6 +27,7 @@ type cciuOpts struct {
 	Filter struct {
 		IgnoreBeta       bool
 		StrictLabels     bool
+		SkipNonSemVer    bool
 		KeepVersionLevel int
 	}
 
@@ -41,10 +42,11 @@ func main() {
 
 	flag.BoolVar(&opts.Filter.IgnoreBeta, "exclude-beta-tags", false, "exclude 'beta' tags")
 	flag.BoolVar(&opts.Filter.StrictLabels, "strict-labels", false, "strict label matching")
+	flag.BoolVar(&opts.Filter.SkipNonSemVer, "skip-non-semver", false, "skip non-semver tags")
 
 	keepVersionLevel := flag.String("keep", "", "keep [major|minor] version")
-	doPrintJSON := flag.Bool("json", false, "use json output format")
 	doPrettyPrintJSON := flag.Bool("json-pretty", false, "indent json output")
+	doPrintJSON := flag.Bool("json", false, "use json output format")
 	doUseSimpleMarkers := flag.Bool("simple-markers", false, "use simple ascii markers")
 	doShowStats := flag.Bool("stats", false, "show stats")
 	doShowOldTags := flag.Bool("show-old", false, "show older tags")
@@ -124,7 +126,7 @@ func fetchAndCompare(names []string, opts *cciuOpts) {
 		spec, err := imagespec.Parse(ref)
 		if err != nil {
 			stats.InvalidSpec++
-			opts.Printer.NewSpec(ref, time.Duration(0), fmt.Errorf("error parsing name %q: %s", ref, err))
+			opts.Printer.NewSpec(ref, time.Duration(0), fmt.Errorf(errParsingName, ref, err))
 			continue
 		}
 
@@ -133,6 +135,17 @@ func fetchAndCompare(names []string, opts *cciuOpts) {
 		if spec.Tag == "" {
 			stats.NonTagged++
 			continue
+		}
+
+		// skip images without semver tag
+		if opts.Filter.SkipNonSemVer {
+			_, err := semver.NewVersion(spec.Tag)
+			if err != nil {
+				stats.NonSemVer++
+				err = fmt.Errorf(errTagNotSemver, spec.Tag, spec, err)
+				opts.Printer.NewSpec(spec.String(), time.Duration(0), err)
+				continue
+			}
 		}
 
 		rr := spec.RegistryRepo()
@@ -172,15 +185,17 @@ func compareAndPrint(spec *imagespec.Spec, rtags map[string]*cciuRepoTags, opts 
 	v, err := semver.NewVersion(spec.Tag)
 	if err != nil {
 		stats.NonSemVer++
-		err = fmt.Errorf("error: tag %q of image %q is not semver: %s", spec.Tag, spec, err)
-		prt.NewSpec(spec.String(), time.Duration(0), err)
+		if !opts.Filter.SkipNonSemVer {
+			err = fmt.Errorf(errTagNotSemver, spec.Tag, spec, err)
+			prt.NewSpec(spec.String(), time.Duration(0), err)
+		}
 		return
 	}
 
 	rt := rtags[spec.RegistryRepo()]
 
 	if rt.FetchErr != nil {
-		err = fmt.Errorf("error fetching tags for %q: %s", spec, rt.FetchErr)
+		err = fmt.Errorf(errFetchTags, spec, rt.FetchErr)
 		prt.NewSpec(spec.String(), rt.Duration, err)
 		return
 	}

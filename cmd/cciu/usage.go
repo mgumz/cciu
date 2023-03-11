@@ -6,13 +6,16 @@ import (
 	"os"
 )
 
-func printUsage() {
-
-	fmt.Fprintln(os.Stderr, `cciu - check container images for updates
+const (
+	usage = `cciu - check container images for updates
 
 Usage: cciu [flags] <image:1> <image:2> ...
-Flags:`)
+Flags:`
+)
 
+func printUsage() {
+
+	fmt.Fprintln(os.Stderr, usage)
 	flag.PrintDefaults()
 }
 
