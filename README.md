@@ -104,6 +104,11 @@ Check container image updates for running contains within a k8s cluster:
 Here the name of the Pod and the k8s namespace are added to the "context" part
 of the image name. This helps to identify the deployment which might benefit
 from an upgrade of the container image.
+
+## Installation
+
+    $> go install -v github.com/mgumz/cciu/cmd/cciu@latest
+
 ## Building
 
     $> make cciu
