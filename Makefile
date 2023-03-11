@@ -1,4 +1,4 @@
-VERSION=0.8.1
+VERSION=$(shell cat VERSION)
 BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 GIT_HASH=$(shell git rev-parse HEAD)
 TARGETS=linux.amd64 linux.arm64 linux.mips64 windows.amd64.exe darwin.amd64 darwin.arm64
