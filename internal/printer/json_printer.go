@@ -44,7 +44,7 @@ func (p *JSONPrinter) Flush(stats *stats.AllStats) {
 		p.cur = nil
 	}
 
-	p.enc.Encode(p.jo)
+	_ = p.enc.Encode(p.jo)
 }
 
 // SetShowOldTags activates showing old tags while printing
