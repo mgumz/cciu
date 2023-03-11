@@ -37,13 +37,17 @@ func ConstraintFilter(c *semver.Constraints) FilterFunc {
 }
 
 // IgnoreBetaVersions filters all labels which start with
+// * "rc" - for release-candidate
 // * "beta" - for beta-versions
 // * "alpha" - for alpha-versions
-// * "rc" - for release-candidate
 func IgnoreBetaVersions(v *semver.Version) bool {
 
 	p := v.Prerelease()
-	if strings.HasPrefix(p, "beta") || strings.HasPrefix(p, "alpha") || strings.HasPrefix(p, "rc") {
+
+	switch {
+	case strings.HasPrefix(p, "rc"):
+	case strings.HasPrefix(p, "beta"):
+	case strings.HasPrefix(p, "alpha"):
 		return false
 	}
 
