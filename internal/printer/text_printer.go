@@ -70,9 +70,13 @@ func (p *TextPrinter) SetShowStats(s bool) {
 // NewSpec starts printing the tags for "name" - its like a headline
 func (p *TextPrinter) NewSpec(name string, dur time.Duration, err error) {
 	p.printedTag = false
-	fmt.Fprintln(p.w, name, fmt.Sprintf("# fetched in %s", dur))
+	comment := "# skipped"
+	if dur > 0 {
+		comment = fmt.Sprintf("# fetched in %s", dur.Round(time.Millisecond))
+	}
+	fmt.Fprintln(p.w, name, comment)
 	if err != nil {
-		fmt.Fprintf(p.w, "\t%s", err)
+		fmt.Fprintf(p.w, "\t%s\n", err)
 		return
 	}
 }
