@@ -58,7 +58,10 @@ deps-ls:
 deps-ls-updates:
 	go list -m -mod=readonly -f '{{if not .Indirect}}{{.}}{{end}}' -u all
 
-report: report-cyclo report-lint report-staticcheck report-mispell report-ineffassign report-vet
+report: report-vuln report-gosec
+report: report-cyclo report-lint report-staticcheck
+report: report-mispell report-ineffassign report-vet
+
 report-cyclo:
 	@echo '####################################################################'
 	gocyclo ./cmd/cciu
@@ -78,11 +81,20 @@ report-staticcheck:
 	@echo '####################################################################'
 	staticcheck ./cmd/... ./internal/...
 
+report-vuln:
+	@echo '####################################################################'
+	govulncheck ./...
+
+report-gosec:
+	@echo '####################################################################'
+	gosec ./...
+
 fetch-report-tools:
 	go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 	go install github.com/client9/misspell/cmd/misspell@latest
 	go install github.com/gordonklaus/ineffassign@latest
 	go install honnef.co/go/tools/cmd/staticcheck@latest
- 
+	go install golang.org/x/vuln/cmd/govulncheck@latest
+	go install github.com/securego/gosec/v2/cmd/gosec@latest
 
 .PHONY: cciu bin/cciu
