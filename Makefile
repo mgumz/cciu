@@ -89,6 +89,10 @@ report-gosec:
 	@echo '####################################################################'
 	gosec ./...
 
+report-grype:
+	@echo '####################################################################'
+	grype .
+
 fetch-report-tools:
 	go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 	go install github.com/client9/misspell/cmd/misspell@latest
@@ -96,5 +100,8 @@ fetch-report-tools:
 	go install honnef.co/go/tools/cmd/staticcheck@latest
 	go install golang.org/x/vuln/cmd/govulncheck@latest
 	go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+fetch-report-tool-grype:
+	go install github.com/anchore/grype@latest
 
 .PHONY: cciu bin/cciu
