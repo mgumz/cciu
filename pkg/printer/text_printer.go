@@ -7,7 +7,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
-	"github.com/mgumz/cciu/internal/stats"
+	"github.com/mgumz/cciu/pkg/stats"
 )
 
 const (

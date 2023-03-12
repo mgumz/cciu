@@ -3,7 +3,7 @@ package fetcher
 import (
 	"time"
 
-	"github.com/mgumz/cciu/internal/repo"
+	"github.com/mgumz/cciu/pkg/repo"
 )
 
 // Simple defines a simple registry.Fetcher which is just a tiny wrapper around

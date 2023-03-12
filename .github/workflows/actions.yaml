@@ -23,7 +23,7 @@ jobs:
     - uses: WillAbides/setup-go-faster@v1.8.0
       with:
         go-version: ${{ matrix.go }}
-    - run: "go test ./internal/..."
+    - run: "go test ./pkg/..."
 
   reports:
     name: "Run various reports on code basis"

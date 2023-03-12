@@ -5,7 +5,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
-	"github.com/mgumz/cciu/internal/stats"
+	"github.com/mgumz/cciu/pkg/stats"
 )
 
 // Printer describes the interface for a cciu printer - a helper for controlled

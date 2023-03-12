@@ -9,12 +9,12 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
-	"github.com/mgumz/cciu/internal/imagespec"
-	"github.com/mgumz/cciu/internal/printer"
-	"github.com/mgumz/cciu/internal/registry"
-	"github.com/mgumz/cciu/internal/registry/fetcher"
-	"github.com/mgumz/cciu/internal/stats"
-	"github.com/mgumz/cciu/internal/tag"
+	"github.com/mgumz/cciu/pkg/imagespec"
+	"github.com/mgumz/cciu/pkg/printer"
+	"github.com/mgumz/cciu/pkg/registry"
+	"github.com/mgumz/cciu/pkg/registry/fetcher"
+	"github.com/mgumz/cciu/pkg/stats"
+	"github.com/mgumz/cciu/pkg/tag"
 )
 
 type cciuRepoTags struct {

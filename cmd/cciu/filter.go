@@ -5,7 +5,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
-	"github.com/mgumz/cciu/internal/tag"
+	"github.com/mgumz/cciu/pkg/tag"
 )
 
 const (
