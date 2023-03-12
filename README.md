@@ -1,7 +1,9 @@
 # cciu - Check Container Images for Updates
 
+[![GitHub Release](https://img.shields.io/github/v/release/mgumz/cciu.svg)](https://github.com/mgumz/cciu/releases/latest)
 [![Status](https://github.com/mgumz/cciu/actions/workflows/actions.yaml/badge.svg)](https://github.com/mgumz/cciu/actions/workflows/actions.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mgumz/cciu)](https://goreportcard.com/report/github.com/mgumz/cciu)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/mgumz/cciu.svg)](https://github.com/mgumz/cciu)
 
 `cciu` checks container repositories for available updates for a given set of
 container image names.
