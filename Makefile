@@ -58,9 +58,10 @@ deps-ls:
 deps-ls-updates:
 	go list -m -mod=readonly -f '{{if not .Indirect}}{{.}}{{end}}' -u all
 
-report: report-vuln report-gosec
-report: report-cyclo report-lint report-staticcheck
-report: report-mispell report-ineffassign report-vet
+reports: report-vuln report-gosec
+reports: report-staticcheck report-vet report-ineffassign
+reports: report-cyclo 
+reports: report-mispell
 
 report-cyclo:
 	@echo '####################################################################'
@@ -68,9 +69,6 @@ report-cyclo:
 report-mispell:
 	@echo '####################################################################'
 	misspell ./cmd/
-report-lint:
-	@echo '####################################################################'
-	golint ./cmd/... ./internal/...
 report-ineffassign:
 	@echo '####################################################################'
 	ineffassign ./cmd/... ./internal/...
