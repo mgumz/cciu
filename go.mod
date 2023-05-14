@@ -6,7 +6,9 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/containers/image/v5 v5.25.0
 	// only required to address a dependabot complaint
-	github.com/docker/docker v23.0.4+incompatible
+	github.com/docker/distribution v2.8.2+incompatible // indirect
+	// only required to address a dependabot complaint
+	github.com/docker/docker v23.0.4+incompatible // indirect
 )
 
 require (
@@ -14,7 +16,6 @@ require (
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.1.7 // indirect
 	github.com/containers/storage v1.46.0 // indirect
-	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
