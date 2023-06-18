@@ -8,7 +8,7 @@ require (
 	// only required to address a dependabot complaint
 	github.com/docker/distribution v2.8.2+incompatible // indirect
 	// only required to address a dependabot complaint
-	github.com/docker/docker v23.0.4+incompatible // indirect
+	github.com/docker/docker v24.0.2+incompatible // indirect
 )
 
 require (
