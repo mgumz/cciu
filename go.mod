@@ -3,8 +3,8 @@ module github.com/mgumz/cciu
 go 1.22.0
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/containers/image/v5 v5.32.0
+	github.com/Masterminds/semver/v3 v3.3.0
 )
 
 require (
