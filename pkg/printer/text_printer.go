@@ -83,12 +83,14 @@ func (p *TextPrinter) NewSpec(name string, dur time.Duration, err error) {
 }
 
 // PrintTag prints the tag with version "other" for the requested "name" which
-// was started via PrintSpec
+// was started via PrintSpec.
 func (p *TextPrinter) PrintTag(name string, base, other *semver.Version) {
 
 	if !p.showOld && p.printedTag {
 		return
 	}
+
+	verdict := " "
 
 	// force the "label" part to match base.
 	// if we dont do this, library "semver" considers "-label" to be
@@ -97,13 +99,18 @@ func (p *TextPrinter) PrintTag(name string, base, other *semver.Version) {
 	// without the pre-release will do.
 	o := *other
 	o, _ = o.SetPrerelease("")
+	b := *base
 
-	verdict := " "
-	if o.GreaterThan(base) {
-		verdict = p.verdictMarkers[markAhead]
-	} else if o.Equal(base) {
+	// in case, "base" was given as "8.4" … the verdict
+	// should be equal upon 8.4.1 or 8.4.99.
+	bc, _ := semver.NewConstraint(b.Original())
+	if bc.Check(&o) {
 		verdict = p.verdictMarkers[markEqual]
-	} else if o.LessThan(base) {
+	} else if o.GreaterThan(&b) {
+		verdict = p.verdictMarkers[markAhead]
+	} else if o.Equal(&b) {
+		verdict = p.verdictMarkers[markEqual]
+	} else if o.LessThan(&b) {
 		verdict = p.verdictMarkers[markOutdated]
 	}
 

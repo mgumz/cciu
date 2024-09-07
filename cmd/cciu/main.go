@@ -25,10 +25,10 @@ type cciuRepoTags struct {
 
 type cciuOpts struct {
 	Filter struct {
-		IgnoreBeta       bool
-		StrictLabels     bool
-		SkipNonSemVer    bool
-		KeepVersionLevel int
+		IgnoreBeta    bool
+		StrictLabels  bool
+		SkipNonSemVer bool
+		Keep          int
 	}
 
 	Fetcher registry.Fetcher
@@ -44,7 +44,7 @@ func main() {
 	flag.BoolVar(&opts.Filter.StrictLabels, "strict-labels", false, "strict label matching")
 	flag.BoolVar(&opts.Filter.SkipNonSemVer, "skip-non-semver", false, "skip non-semver tags")
 
-	keepVersionLevel := flag.String("keep", "", "keep [major|minor] version")
+	keepVersion := flag.String("keep", "", "keep [major|minor] version")
 	doPrettyPrintJSON := flag.Bool("json-pretty", false, "indent json output")
 	doPrintJSON := flag.Bool("json", false, "use json output format")
 	doUseSimpleMarkers := flag.Bool("simple-markers", false, "use simple ascii markers")
@@ -63,14 +63,14 @@ func main() {
 		return
 	}
 
-	switch *keepVersionLevel {
+	switch *keepVersion {
 	case "":
 	case "major":
-		opts.Filter.KeepVersionLevel = keepMajorLevel
+		opts.Filter.Keep = tag.KeepMajor
 	case "minor":
-		opts.Filter.KeepVersionLevel = keepMinorLevel
+		opts.Filter.Keep = tag.KeepMinor
 	default:
-		os.Exit(printUnsupportedMinMajorLevel(*keepVersionLevel))
+		os.Exit(printUnsupportedMinMajorLevel(*keepVersion))
 		return
 	}
 
@@ -204,7 +204,7 @@ func compareAndPrint(spec *imagespec.Spec, rtags map[string]*cciuRepoTags, opts 
 	fl = fl.filterHugeVersionGaps(v)
 	fl = fl.filterBetaVersions(opts.Filter.IgnoreBeta)
 	fl = fl.filterStrictLabels(spec.Label, opts.Filter.StrictLabels)
-	fl = fl.filterKeepLevel(v, opts.Filter.KeepVersionLevel)
+	fl = fl.filterKeepLevel(v, opts.Filter.Keep)
 
 	tags := tag.NewFromStrings(rt.Tags, tag.ApplyFilterList(fl))
 	tags.Sort()

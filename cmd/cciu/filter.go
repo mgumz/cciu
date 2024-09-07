@@ -8,12 +8,6 @@ import (
 	"github.com/mgumz/cciu/pkg/tag"
 )
 
-const (
-	keepIgnoreLevel = iota
-	keepMajorLevel
-	keepMinorLevel
-)
-
 type fList []tag.FilterFunc
 
 func (list fList) filterHugeVersionGaps(base *semver.Version) fList {
@@ -42,11 +36,11 @@ func (list fList) filterStrictLabels(label string, doFilter bool) fList {
 }
 
 func (list fList) filterKeepLevel(base *semver.Version, keepLevel int) fList {
-	if keepLevel == keepMajorLevel {
+	if keepLevel == tag.KeepMajor {
 		cs := fmt.Sprintf("~%d", base.Major())
 		c, _ := semver.NewConstraint(cs)
 		return append(list, tag.ConstraintFilter(c))
-	} else if keepLevel == keepMinorLevel {
+	} else if keepLevel == tag.KeepMinor {
 		cs := fmt.Sprintf("~%d.%d", base.Major(), base.Minor())
 		c, _ := semver.NewConstraint(cs)
 		return append(list, tag.ConstraintFilter(c))
