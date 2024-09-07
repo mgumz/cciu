@@ -1,6 +1,7 @@
 package tag
 
 import (
+	"math"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -19,10 +20,26 @@ type FilterFunc func(*semver.Version) bool
 //
 // n == 1000 seems to be a major, "unnatural" jump in
 // the major version. lets call it a "heuristic".
-func HugeVersionHeuristicFilter(a *semver.Version, n int) FilterFunc {
+func HugeVersionHeuristicFilter(a *semver.Version, limit int) FilterFunc {
 
 	filter := func(b *semver.Version) bool {
-		return b.Major() <= (a.Major() + uint64(n))
+
+		if limit < 0 {
+			return false
+		}
+
+		if b.Major() <= a.Major() {
+			return true
+		}
+
+		// https://github.com/securego/gosec/issues/1185
+		// https://github.com/ccoVeille/go-safecast
+		if (a.Major() >= math.MaxInt) || (b.Major() >= math.MaxInt) {
+			return false
+		}
+		delta := int(b.Major()) - int(a.Major()) // #nosec G115
+
+		return delta <= limit
 	}
 
 	return filter
