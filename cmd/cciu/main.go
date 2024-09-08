@@ -142,8 +142,10 @@ func fetchAndCompare(names []string, opts *cciuOpts) {
 			_, err := semver.NewVersion(spec.Tag)
 			if err != nil {
 				stats.NonSemVer++
-				err = fmt.Errorf(errTagNotSemver, spec.Tag, spec, err)
-				opts.Printer.NewSpec(spec.String(), time.Duration(0), err)
+				//note: intentionally _not_ printing the error "skip-non-semver"
+				//  the following line afterwards was used before:
+				//	err = fmt.Errorf(errTagNotSemver, spec.Tag, spec, err)
+				opts.Printer.NewSpec(spec.String(), time.Duration(0), nil)
 				continue
 			}
 		}
