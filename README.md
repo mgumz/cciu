@@ -25,7 +25,7 @@ container image names.
     -stats                    - show stats
     -strict-labels            - strict label matching
     -timeout                  - time out fetch operation after <dur>
-    -keep=["major"|"minor"]   - keep major/minor version
+    -keep ["major"|"minor"]   - keep major/minor version
     -version                  - show version
 
 ## Snippets
@@ -47,7 +47,7 @@ If no update is available, the output would look like this:
 
 To only check for updates of patch version keeping the minor version:
 
-    $> cciu -keep=minor alpine:3.11.4
+    $> cciu -keep minor alpine:3.11.4
     ▲       alpine:3.11.13
 
 In addition, the output could be JSON to process it somewhere else:
