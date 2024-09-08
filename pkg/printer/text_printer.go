@@ -3,6 +3,7 @@ package printer
 import (
 	"fmt"
 	"io"
+	"text/tabwriter"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -25,7 +26,7 @@ var (
 // TextPrinter is a small helper to print the requested images, fetched tags
 // etc to create useful output
 type TextPrinter struct {
-	w              io.Writer
+	w              *tabwriter.Writer
 	showOld        bool
 	showStats      bool
 	printedTag     bool
@@ -35,8 +36,9 @@ type TextPrinter struct {
 // NewTextPrinter returns a TextPrinter which prints to w
 // if simpleMarkers is true, use simple ASCII chars as vertdict markers
 func NewTextPrinter(w io.Writer, simpleMarkers bool) *TextPrinter {
+	tw := tabwriter.NewWriter(w, 0, 0, 1, ' ', 0)
 	p := &TextPrinter{
-		w:              w,
+		w:              tw,
 		verdictMarkers: verdictMarkersUnicode,
 	}
 	if simpleMarkers {
@@ -49,12 +51,13 @@ func NewTextPrinter(w io.Writer, simpleMarkers bool) *TextPrinter {
 func (p *TextPrinter) Flush(stats *stats.AllStats) {
 	if p.showStats && stats != nil {
 		fmt.Fprintln(p.w, "---")
-		fmt.Fprintf(p.w, "duration: %s\n", stats.Duration)
-		fmt.Fprintf(p.w, "asked: %d\n", stats.Asked)
-		fmt.Fprintf(p.w, "checked: %d\n", stats.Checked)
-		fmt.Fprintf(p.w, "non-semver: %d\n", stats.NonSemVer)
-		fmt.Fprintf(p.w, "duplicates: %d\n", stats.Duplicates)
+		fmt.Fprintf(p.w, "duration:\t%s\n", stats.Duration)
+		fmt.Fprintf(p.w, "asked:\t%d\n", stats.Asked)
+		fmt.Fprintf(p.w, "checked:\t%d\n", stats.Checked)
+		fmt.Fprintf(p.w, "non-semver:\t%d\n", stats.NonSemVer)
+		fmt.Fprintf(p.w, "duplicates:\t%d\n", stats.Duplicates)
 	}
+	p.w.Flush()
 }
 
 // SetShowOldTags configures TextPrinter p to also show older, outdated tags
@@ -71,13 +74,13 @@ func (p *TextPrinter) SetShowStats(s bool) {
 // NewSpec starts printing the tags for "name" - its like a headline
 func (p *TextPrinter) NewSpec(name string, dur time.Duration, err error) {
 	p.printedTag = false
-	comment := "# skipped"
+	comment := "\t# skipped"
 	if dur > 0 {
-		comment = fmt.Sprintf("# fetched in %s", dur.Round(time.Millisecond))
+		comment = fmt.Sprintf("\t# fetched in %s", dur.Round(time.Millisecond))
 	}
 	fmt.Fprintln(p.w, name, comment)
 	if err != nil {
-		fmt.Fprintf(p.w, "\t%s\n", err)
+		fmt.Fprintf(p.w, "     %s\n", err)
 		return
 	}
 }
@@ -114,7 +117,7 @@ func (p *TextPrinter) PrintTag(name string, base, other *semver.Version) {
 		verdict = p.verdictMarkers[markOutdated]
 	}
 
-	fmt.Fprintf(p.w, "%s\t%s:%s\n", verdict, name, other)
+	fmt.Fprintf(p.w, "%s    %s:%s\t\n", verdict, name, other)
 
 	p.printedTag = true
 }
