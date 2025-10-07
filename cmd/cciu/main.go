@@ -52,7 +52,7 @@ func main() {
 	doShowOldTags := flag.Bool("show-old", false, "show older tags")
 	doLimitPerRegistry := flag.Int("limit-per-registry", 0, "limit parallel fetches per registry")
 	fetchTimeout := flag.Duration("timeout", 0, "timeout for fetch operations")
-	//authFilePath := flag.String("auth-file", "", "path to the credential store")
+	// authFilePath := flag.String("auth-file", "", "path to the credential store")
 	doShowVersion := flag.Bool("version", false, "show version")
 
 	flag.Usage = printUsage
@@ -90,7 +90,7 @@ func main() {
 		opts.Fetcher = fetcher.NewPerRegistry(*doLimitPerRegistry)
 	}
 	opts.Fetcher.SetTimeout(*fetchTimeout)
-	//opts.Fetcher.SetAuthFilePath(*authFilePath)
+	// opts.Fetcher.SetAuthFilePath(*authFilePath)
 
 	ts := time.Now()
 	fetchAndCompare(flag.Args(), opts)

@@ -6,29 +6,33 @@ package imagespec
 //
 // docker.io/library/alpine:1.13-rc0-amd64+12345
 // ^-+-----^ ^--+--^ ^--+-^ ^-+^ ^+------^ ^-+-^
-//   |          |       |     |   |          |
-//   +- registry|       |     |   |          |
-//              +- repository |   |          |
-//                            |   |          |
-// ····· semver ···································
-//                            |   |          |
-//                            +- version     |
-//                            |   |          |
-//                            |   +- pre-release
-//                            |              |
-//                            |              +- build
+//
+//	|          |       |     |   |          |
+//	+- registry|       |     |   |          |
+//	           +- repository |   |          |
+//	                         |   |          |
+//
+//  ····· semver ···································
+//
+//	|   |          |
+//	+- version     |
+//	|   |          |
+//	|   +- pre-release
+//	|              |
+//	|              +- build
+//
 // ····· other ····································
-//                            |
-//                            +- label
+//
+//	|
+//	+- label
 //
 // relevant links:
-// * https://cloud.google.com/artifact-registry/docs/docker/names
-//   <project>/<repo>/<image>:<tag>
-// * https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html/recommended_practices_for_container_development/naming
-//   <repository>:<tag>
+//   - https://cloud.google.com/artifact-registry/docs/docker/names
+//     <project>/<repo>/<image>:<tag>
+//   - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html/recommended_practices_for_container_development/naming
+//     <repository>:<tag>
 //
 // * short names: https://github.com/containers/shortnames
-//
 type Spec struct {
 	Registry string
 	Repo     string
@@ -65,10 +69,10 @@ func Parse(name string) (*Spec, error) {
 	return s, nil
 }
 
-//func MustParse(ispec string) *ImageSpec {
-// FIXME: not implemented yet
-//	return nil
-//}
+// func MustParse(ispec string) *ImageSpec {
+//  FIXME: not implemented yet
+// 	return nil
+// }
 
 // String satisfies the Stringer interface
 func (spec *Spec) String() string {
