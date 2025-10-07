@@ -57,7 +57,7 @@ func (p *TextPrinter) Flush(stats *stats.AllStats) {
 		fmt.Fprintf(p.w, "non-semver:\t%d\n", stats.NonSemVer)
 		fmt.Fprintf(p.w, "duplicates:\t%d\n", stats.Duplicates)
 	}
-	p.w.Flush()
+	p.w.Flush() // #nosec: G104
 }
 
 // SetShowOldTags configures TextPrinter p to also show older, outdated tags
