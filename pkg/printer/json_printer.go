@@ -116,13 +116,14 @@ func (p *JSONPrinter) PrintTag(name string, base, other *semver.Version) {
 	// in case, "base" was given as "8.4" … the verdict
 	// should be equal upon 8.4.1 or 8.4.99.
 	bc, _ := semver.NewConstraint(base.Original())
-	if bc.Check(&o) {
+	switch {
+	case bc.Check(&o):
 		vbase, vother = "equal", "equal"
-	} else if o.GreaterThan(base) {
+	case o.GreaterThan(base):
 		vbase, vother = "outdated", "ahead"
-	} else if o.Equal(base) {
+	case o.Equal(base):
 		vbase, vother = "equal", "equal"
-	} else if o.LessThan(base) {
+	case o.LessThan(base):
 		vbase, vother = "ahead", "outdated"
 	}
 

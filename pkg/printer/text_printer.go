@@ -107,16 +107,16 @@ func (p *TextPrinter) PrintTag(name string, base, other *semver.Version) {
 	// in case, "base" was given as "8.4" … the verdict
 	// should be equal upon 8.4.1 or 8.4.99.
 	bc, _ := semver.NewConstraint(b.Original())
-	if bc.Check(&o) {
+	switch {
+	case bc.Check(&o):
 		verdict = p.verdictMarkers[markEqual]
-	} else if o.GreaterThan(&b) {
+	case o.GreaterThan(&b):
 		verdict = p.verdictMarkers[markAhead]
-	} else if o.Equal(&b) {
+	case o.Equal(&b):
 		verdict = p.verdictMarkers[markEqual]
-	} else if o.LessThan(&b) {
+	case o.LessThan(&b):
 		verdict = p.verdictMarkers[markOutdated]
 	}
-
 	fmt.Fprintf(p.w, "%s    %s:%s\t\n", verdict, name, other)
 
 	p.printedTag = true

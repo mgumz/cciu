@@ -37,11 +37,12 @@ func (list fList) filterStrictLabels(label string, doFilter bool) fList {
 }
 
 func (list fList) filterKeepLevel(base *semver.Version, keepLevel int) fList {
-	if keepLevel == tag.KeepMajor {
+	switch keepLevel {
+	case tag.KeepMajor:
 		cs := fmt.Sprintf("~%d", base.Major())
 		c, _ := semver.NewConstraint(cs)
 		return append(list, tag.ConstraintFilter(c))
-	} else if keepLevel == tag.KeepMinor {
+	case tag.KeepMinor:
 		cs := fmt.Sprintf("~%d.%d", base.Major(), base.Minor())
 		c, _ := semver.NewConstraint(cs)
 		return append(list, tag.ConstraintFilter(c))
