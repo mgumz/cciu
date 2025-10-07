@@ -30,7 +30,7 @@ container image names.
 
 ## Snippets
 
-Check for some abitrary container image update:
+Check for some arbitrary container image update:
 
     $> cciu alpine:3.11
     alpine:3.11
