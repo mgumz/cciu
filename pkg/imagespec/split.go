@@ -18,7 +18,7 @@ func SplitLabelContext(labelCtx string) (label, ctx string) {
 		return label, ctx
 	}
 
-	parts := strings.SplitN(labelCtx, sepLabelContext, 2)
+	parts := strings.SplitN(labelCtx, sepLabelContext, maxParts)
 
 	if len(parts) > 0 {
 		label = parts[0]
@@ -38,7 +38,7 @@ func SplitTagLabel(taglabel string) (tag, label string) {
 		return tag, label
 	}
 
-	parts := strings.SplitN(taglabel, sepTagLabel, 2)
+	parts := strings.SplitN(taglabel, sepTagLabel, maxParts)
 
 	if len(parts) > 0 {
 		tag = parts[0]
@@ -61,7 +61,7 @@ func SplitRepoTag(repotag string) (repo, tag string) {
 		return repo, tag
 	}
 
-	parts := strings.SplitN(repotag, sepRepoTag, 2)
+	parts := strings.SplitN(repotag, sepRepoTag, maxParts)
 
 	if len(parts) > 0 {
 		repo = parts[0]
@@ -81,7 +81,7 @@ func SplitRegistryRepo(regrepo string) (registry, repotag string) {
 		return registry, repotag
 	}
 
-	parts := strings.SplitN(regrepo, sepRegistryRepo, 2)
+	parts := strings.SplitN(regrepo, sepRegistryRepo, maxParts)
 
 	// if first part looks like a domain-name (contains '.'), do the actual
 	// split. otherwise, the "registry"-part stays unknown.

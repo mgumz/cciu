@@ -21,6 +21,8 @@ func printUsage() {
 
 func printUnsupportedMinMajorLevel(level string) int {
 
+	const unlucky = 13
+
 	fmt.Fprintf(os.Stderr, "Ignoring unknown version Level: %s\n", level)
-	return 13
+	return unlucky
 }

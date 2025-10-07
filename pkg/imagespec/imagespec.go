@@ -45,6 +45,7 @@ const (
 	sepTagLabel     = "-"
 	sepRepoTag      = ":"
 	sepRegistryRepo = "/"
+	maxParts        = 2
 )
 
 // Parse parses the given name into an ImageSpec

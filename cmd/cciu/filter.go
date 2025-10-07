@@ -11,7 +11,8 @@ import (
 type fList []tag.FilterFunc
 
 func (list fList) filterHugeVersionGaps(base *semver.Version) fList {
-	f := tag.HugeVersionHeuristicFilter(base, 1000)
+	const hugeVersion = 10000
+	f := tag.HugeVersionHeuristicFilter(base, hugeVersion)
 	return append(list, f)
 }
 
