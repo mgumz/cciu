@@ -20,10 +20,7 @@ func (list fList) filterBetaVersions(doFilter bool) fList {
 	if !doFilter {
 		return list
 	}
-	f := func(v *semver.Version) bool {
-		return tag.IgnoreBetaVersions(v)
-	}
-	return append(list, f)
+	return append(list, tag.IgnoreBetaVersions)
 }
 
 func (list fList) filterStrictLabels(label string, doFilter bool) fList {
