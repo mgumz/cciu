@@ -10,6 +10,12 @@ import (
 	"github.com/mgumz/cciu/pkg/stats"
 )
 
+const (
+	verdictEqual    = "equal"
+	verdictOutdated = "outdated"
+	verdictAhead    = "ahead"
+)
+
 // JSONPrinter collects the requested images, the fetched tags and creates
 // a JSON document which is at the end printed.
 type JSONPrinter struct {
@@ -118,13 +124,13 @@ func (p *JSONPrinter) PrintTag(name string, base, other *semver.Version) {
 	bc, _ := semver.NewConstraint(base.Original())
 	switch {
 	case bc.Check(&o):
-		vbase, vother = "equal", "equal"
+		vbase, vother = verdictEqual, verdictEqual
 	case o.GreaterThan(base):
-		vbase, vother = "outdated", "ahead"
+		vbase, vother = verdictOutdated, verdictAhead
 	case o.Equal(base):
-		vbase, vother = "equal", "equal"
+		vbase, vother = verdictEqual, verdictEqual
 	case o.LessThan(base):
-		vbase, vother = "ahead", "outdated"
+		vbase, vother = verdictAhead, verdictOutdated
 	}
 
 	if p.cur.Verdict == "" {
