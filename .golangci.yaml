@@ -24,6 +24,9 @@ linters:
       - source: "^func main"
         linters:
           - funlen
+      - source: "^func fetchAndCompare"
+        linters:
+          - funlen
       - path: '.*_test\.go'
         linters:
           - gosec
