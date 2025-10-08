@@ -27,6 +27,9 @@ linters:
       - path: '.*_test\.go'
         linters:
           - gosec
+      - path: 'pkg/imagespec/imagespec.go'
+        linters:
+          - lll
 
   settings:
     funlen:

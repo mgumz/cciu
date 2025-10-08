@@ -14,10 +14,10 @@ jobs:
     strategy:
       matrix:
         os: ["windows-latest", "ubuntu-latest", "macOS-latest"]
-        go: ["1.21.x", "1.22.x"]
+        go: ["1.25.x", "1.24.x"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
       - uses: WillAbides/setup-go-faster@v1.14.0
@@ -29,34 +29,28 @@ jobs:
     name: "Run various reports on code basis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
-      - uses: WillAbides/setup-go-faster@v1.14.0
+      - uses: jdx/mise-action@v2
         with:
-          go-version: "1.22.x"
-      - run: "go env; mkdir -p /opt/local/bin || ls -l /opt/local/bin"
-      - uses: actions/cache@v3
-        id: cache-report-tools
-        with:
-          path: /opt/local/bin
-          key: report-tools-${{ runner.os }}-${{ hashFiles('Makefile') }}
-      - name: "Install Report-Tools"
-        if: steps.cache-report-tools.outputs.cache-hit != 'true'
-        run: "env GOBIN=/opt/local/bin make fetch-report-tools"
-      - run: "ls -l /opt/local/bin"
-      - run: "env PATH=/opt/local/bin:$PATH make reports"
+          cache: true
+          experimental: true
+          log_level: debug
+      - run: "make reports"
 
   simple-run:
     name: "Sanity Check"
     runs-on: "ubuntu-latest"
     needs: [test, reports]
     steps:
-      - uses: WillAbides/setup-go-faster@v1.14.0
-        with:
-          go-version: "1.22.x"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
+      - uses: jdx/mise-action@v2
+        with:
+          cache: true
+          experimental: true
+          log_level: debug
       - run: "make bin/cciu"
       - run: "./bin/cciu -version"

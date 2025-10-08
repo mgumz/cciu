@@ -22,7 +22,7 @@ LDFLAGS=-trimpath 							\
 toc:
 	@echo "list of targets:"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | \
-		awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | \
+		awk -F: '/^# Files/,/^# Finished Make/ { if ($$1 !~ "^([#. \t]|$$)") {print $$1} }' |	\
 		sort | \
 		egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | \
 		awk '{ print " ", $$1 }'
@@ -63,7 +63,7 @@ releases/cciu-$(VERSION).%.tar.gz: bin/cciu-$(VERSION).%
 
 .PHONY: container-image
 container-image: container/Containerfile
-	docker build -f $< -t $(CONTAINER_IMAGE) .
+	podman build -f $< -t $(CONTAINER_IMAGE) .
 
 .PHONY: deps-vendor
 deps-vendor:

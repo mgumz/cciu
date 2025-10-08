@@ -1,11 +1,14 @@
 FROM alpine:3.22 as build
 
-RUN  apk --update add go make musl-dev linux-headers git
+RUN  apk --update add git make mise
 
 ARG  BUILD_DIR=/src/cciu
 
-COPY . $BUILD_DIR
-RUN  env CGO_ENABLED=0 make -C $BUILD_DIR cciu
+WORKDIR $BUILD_DIR
+
+COPY . .
+RUN  mise trust
+RUN  env CGO_ENABLED=0 mise -E build exec go -- make cciu
 
 ###
 
