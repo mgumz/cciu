@@ -7,13 +7,17 @@ import "strings"
 // registry part.
 func (spec *Spec) Normalize() *Spec {
 
+	const (
+		defaultRegistry = "docker.io" // TODO: configurable default
+		defaultTag = "latest"
+	)
 	if spec.Registry == "" {
-		spec.Registry = "docker.io" // TODO: configurable default
+		spec.Registry = defaultRegistry
 	}
 
 	// TODO: apply registry-specific "normalisation" mechanisms in a generic
 	// fashion
-	if spec.Registry == "docker.io" {
+	if spec.Registry == defaultRegistry {
 
 		// "alpine" -> "library/alpine"
 		if !strings.ContainsRune(spec.Repo, '/') {
@@ -21,7 +25,7 @@ func (spec *Spec) Normalize() *Spec {
 		}
 
 		if spec.Tag == "" {
-			spec.Tag = "latest"
+			spec.Tag = defaultTag
 		}
 	}
 
