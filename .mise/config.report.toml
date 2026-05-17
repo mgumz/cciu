@@ -1,0 +1,8 @@
+[tools]
+"go:golang.org/x/vuln/cmd/govulncheck" = "latest"
+golangci-lint = "2.12.2"
+grype = "0.112.0"
+
+[settings]
+lockfile = true
+experimental = true

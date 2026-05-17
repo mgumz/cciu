@@ -1,0 +1,10 @@
+[tools]
+"go:golang.org/x/tools/gopls" = "0.21.1"
+act = "0.2.88"
+golangci-lint-langserver = "0.0.12"
+golines = "latest"
+pinact = "3.10.1"
+
+[settings]
+lockfile = true
+experimental = true
